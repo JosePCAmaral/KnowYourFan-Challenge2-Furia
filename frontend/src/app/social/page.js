@@ -9,23 +9,25 @@ export default function SocialPage() {
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const validate = async () => {
-    const urls = Object.values(form);
-    for (let url of urls) {
-      if (url) {
-        const res = await fetch('/api/validate/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url }),
-        });
-        const data = await res.json();
-        if (!data.valid) return alert('URL inválida: ' + url);
-      }
+    const outroUrl = form.outro;
+
+    if (outroUrl) {
+      const res = await fetch('http://localhost:5000/api/validate/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: outroUrl }),
+      });
+
+      const data = await res.json();
+      if (!data.valid) return alert('URL inválida no campo "Outro".');
     }
-    await fetch('/api/social/save', {
+
+    await fetch('http://localhost:5000/api/social/save', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(form),
     });
+
     router.push('/upload');
   };
 

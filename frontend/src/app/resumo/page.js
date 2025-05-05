@@ -7,12 +7,9 @@ export default function ResumoPage() {
   useEffect(() => {
     const fetchData = async () => {
       const responses = await Promise.all([
-        fetch('/api/dados/get'),
-        fetch('/api/social/'),
-        fetch('/api/atividades/atividade'),
-        fetch('/api/atividades/evento'),
-        fetch('/api/atividades/compra'),
-        fetch('/api/upload/')
+        fetch('http://localhost:5000/api/dados/get'),
+        fetch('http://localhost:5000/api/social/'),
+        fetch('http://localhost:5000/api/atividades/'),
       ]);
 
       const data = await Promise.all(responses.map(res => res.json()));

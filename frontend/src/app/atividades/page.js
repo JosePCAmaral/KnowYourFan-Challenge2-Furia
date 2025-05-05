@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -7,14 +8,15 @@ export default function AtividadesPage() {
   const [evento, setEvento] = useState({ nome: '', tipo: '', data: '', organizacao: '', valor: '' });
   const [compra, setCompra] = useState({ item: '', valor: '', data: '', eventoRelacionado: '' });
 
+
   const handleSubmit = async () => {
-    await fetch('/api/atividades/atividade', {
+    await fetch('http://localhost:5000/api/atividades/atividade', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(atividade),
     });
-    await fetch('/api/atividades/evento', {
+    await fetch('http://localhost:5000/api/atividades/evento', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(evento),
     });
-    await fetch('/api/atividades/compra', {
+    await fetch('http://localhost:5000/api/atividades/compra', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(compra),
     });
     router.push('/resumo');
