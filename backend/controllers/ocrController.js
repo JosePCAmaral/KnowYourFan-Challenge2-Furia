@@ -1,14 +1,21 @@
 const path = require('path');
+const Documento = require('../models/docsModel');
 const { extrairTextoOCR } = require('../services/ocrService');
 
 exports.processarDocumento = async (req, res) => {
   try {
     const filePath = path.resolve(req.file.path);
     const textoExtraido = await extrairTextoOCR(filePath);
-    
-    // Aqui você pode validar se o texto contém CPF, nome, etc.
+
+    const novoDocumento = new Documento({
+      filename: req.file.filename,
+      textoExtraido,
+    });
+
+    await novoDocumento.save();
+
     res.status(200).json({
-      mensagem: 'Documento processado com sucesso!',
+      mensagem: 'Documento processado e salvo com sucesso!',
       texto: textoExtraido,
     });
   } catch (error) {

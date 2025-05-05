@@ -1,15 +1,20 @@
-let usuarios = []; // Simulação de banco em memória
+const RedesSociais = require('../models/socialModel');
 
-exports.cadastrarPerfil = (req, res) => {
-  const { nome, cpf, endereco, interesses } = req.body;
-
-  if (!nome || !cpf || !endereco) {
-    return res.status(400).json({ mensagem: 'Campos obrigatórios ausentes.' });
+exports.getRedes = async (req, res) => {
+  try {
+    const redes = await RedesSociais.find().sort({ criadoEm: -1 }).limit(1); // última
+    res.json(redes[0] || {});
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao buscar redes sociais.' });
   }
+};
 
-  const novoUsuario = { nome, cpf, endereco, interesses };
-  usuarios.push(novoUsuario);
-
-  console.log('Novo perfil cadastrado:', novoUsuario);
-  res.status(201).json({ mensagem: 'Perfil cadastrado com sucesso!', usuario: novoUsuario });
+exports.saveRedes = async (req, res) => {
+  try {
+    const novaRedes = new RedesSociais(req.body);
+    await novaRedes.save();
+    res.status(200).json({ message: 'Redes sociais salvas com sucesso!' });
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao salvar redes sociais.' });
+  }
 };

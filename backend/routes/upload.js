@@ -2,9 +2,8 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
-const { processarDocumento } = require('../controllers/ocrController');
+const { processarDocumento } = require('../controllers/ocrController'); // renomeado aqui
 
-// Configurar upload com multer
 const storage = multer.diskStorage({
   destination: 'uploads/',
   filename: (req, file, cb) => {

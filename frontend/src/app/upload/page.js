@@ -1,16 +1,28 @@
-const handleFileChange = async (e) => {
-    const file = e.target.files[0];
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+export default function DocumentoPage() {
+  const [file, setFile] = useState(null);
+  const router = useRouter();
+
+  const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('documento', file);
-  
-    try {
-      const res = await fetch('http://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      console.log(data.texto);
-    } catch (err) {
-      console.error('Erro ao enviar documento:', err);
-    }
-  };  
+
+    await fetch('/api/upload/', {
+      method: 'POST',
+      body: formData,
+    });
+    router.push('/atividades');
+  };
+
+  return (
+    <div className="container">
+      <h2>Documento de Identificação</h2>
+      <input type="file" accept="image/png" onChange={(e) => setFile(e.target.files[0])} />
+      <button onClick={() => router.back()}>Voltar</button>
+      <button onClick={handleSubmit}>Próximo</button>
+    </div>
+  );
+}
